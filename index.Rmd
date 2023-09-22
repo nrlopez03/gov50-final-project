@@ -1,6 +1,6 @@
 ---
 title: "Gov 50 Final Project"
-author: "Your Name Here"
+author: "Nicholas Lopez"
 description: "My final project"
 output:
   distill::distill_article:
@@ -11,4 +11,4 @@ output:
 
 ## Project thoughts
 
-I am interested in exploring data related to...
+I am interested in exploring data related to changes in voting patterns over time. Specifically, I would be interested in attempting to identify factors (or at least correlations) between changing aspects of a local area (economy, ethnic breakdown, education levels, etc.) and patterns in the party of officers chosen to represent that area (elected congressman, mayors, etc.). This could be done on a local, city-wide scale as well as a state-wide scale. I believe some very interesting patterns and correlations would arise. 
