@@ -1,7 +1,7 @@
 ---
 title: "Gov 50 Final Project"
 author: "Nicholas Lopez"
-description: "My final project"
+description: "Explaining Florida Election Patterns Over Time"
 output:
   distill::distill_article:
     self_contained: false
@@ -12,3 +12,9 @@ output:
 ## Project thoughts
 
 I am interested in exploring data related to changes in voting patterns over time. Specifically, I would be interested in attempting to identify factors (or at least correlations) between changing aspects of a local area (economy, ethnic breakdown, education levels, etc.) and patterns in the party of officers chosen to represent that area (elected congressman, mayors, etc.). This could be done on a local, city-wide scale as well as a state-wide scale. I believe some very interesting patterns and correlations would arise. 
+
+## Proposal
+
+What factors have primarily contributed to the shift in Florida's voting patterns over time? In this project, I plan to study various factors of Florida's demographics and their changes over time. I will attempt to determine which factors are most correlated with the change in Florida's voting patterns over time in US Presidential elections. I will examine the data first on a state level and then attempt to examine data on a county level to find more minute, speicifc demographic shifts. I will look at demographics such as median or average age, college degree rate, median income, race, and possibly other factors. I will then find the correlation between changes in these variables and the proportion of votes for the Republican candidate. I hypothesize age and college degree rate will have the most prounounced effect on voting patterns. This would be confirmed by examining a strong positive correlation between age and proportion of Republican votes and a strong negative correlation between college degree rate and proportion of Republican votes. 
+
+I will be using data from the Florida Department of State [Election Results](https://results.elections.myflorida.com/) website. I will download the state and country-level data and merge it with the necessary demographic data. The data is fully comprehensive, and I will attempt to use data dating back to the 1992 election, though the data goes back to 1978. 
