@@ -115,7 +115,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.24/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["data/registration.csv","index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/viz1-1.png","index_files/figure-html5/viz2-1.png","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.24/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1521,7 +1521,41 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <p>I am interested in exploring data related to changes in voting patterns over time. Specifically, I would be interested in attempting to identify factors (or at least correlations) between changing aspects of a local area (economy, ethnic breakdown, education levels, etc.) and patterns in the party of officers chosen to represent that area (elected congressman, mayors, etc.). This could be done on a local, city-wide scale as well as a state-wide scale. I believe some very interesting patterns and correlations would arise.</p>
 <h2 id="proposal">Proposal</h2>
 <p>What factors have primarily contributed to the shift in Florida’s voting patterns over time? In this project, I plan to study various factors of Florida’s demographics and their changes over time. I will attempt to determine which factors are most correlated with the change in Florida’s voting patterns over time in US Presidential elections. I will examine the data first on a state level and then attempt to examine data on a county level to find more minute, speicifc demographic shifts. I will look at demographics such as median or average age, college degree rate, median income, race, and possibly other factors. I will then find the correlation between changes in these variables and the proportion of votes for the Republican candidate. I hypothesize age and college degree rate will have the most prounounced effect on voting patterns. This would be confirmed by examining a strong positive correlation between age and proportion of Republican votes and a strong negative correlation between college degree rate and proportion of Republican votes.</p>
-<p>I will be using data from the Florida Department of State <a href="https://results.elections.myflorida.com/">Election Results</a> website. I will download the state and country-level data and merge it with the necessary demographic data. The data is fully comprehensive, and I will attempt to use data dating back to the 1992 election, though the data goes back to 1978.</p>
+<p>I will be using data from the <a href="https://results.elections.myflorida.com/">Florida Department of State Election Results website</a>. I will download the state and country-level data and merge it with the necessary demographic data. The data is fully comprehensive, and I will attempt to use data dating back to the 1992 election, though the data goes back to 1978.</p>
+<p>Visualization One:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>registration</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>'data/registration.csv'</span><span class='op'>)</span></span>
+<span><span class='va'>registration</span> <span class='op'>&lt;-</span> <span class='va'>registration</span> <span class='op'>|&gt;</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>repPortion <span class='op'>=</span> <span class='fl'>100</span> <span class='op'>*</span> <span class='va'>republicans</span><span class='op'>/</span><span class='op'>(</span><span class='va'>republicans</span> <span class='op'>+</span> <span class='va'>democrats</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>repPortionPlot</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>registration</span>,</span>
+<span>       mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>year</span>,</span>
+<span>                     y <span class='op'>=</span> <span class='va'>repPortion</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_smooth.html'>geom_smooth</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"loess"</span>, se <span class='op'>=</span> <span class='cn'>FALSE</span>, color <span class='op'>=</span> <span class='st'>'red'</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>x<span class='op'>=</span><span class='st'>'Year'</span>, y <span class='op'>=</span> <span class='st'>'Partisan Voters Registered as Republicans (%)'</span><span class='op'>)</span></span>
+<span>  </span>
+<span><span class='va'>repPortionPlot</span></span></code></pre>
+</div>
+<p><img src="index_files/figure-html5/viz1-1.png" width="624" /></p>
+</div>
+<p>Graphed, we see the portion of partisan voters in Florida that are registered as Republicans. We leave out voters not registered as Democrats or Republicans due to increases in third-party registration. This allows us to focus on strictly relationships within the two-party system.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>registration</span> <span class='op'>&lt;-</span> <span class='va'>registration</span> <span class='op'>|&gt;</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>demPortion <span class='op'>=</span> <span class='fl'>100</span> <span class='op'>*</span> <span class='va'>democrats</span><span class='op'>/</span><span class='op'>(</span><span class='va'>republicans</span> <span class='op'>+</span> <span class='va'>democrats</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>repPortionPlot</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>registration</span>,</span>
+<span>       mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>year</span>,</span>
+<span>                     y <span class='op'>=</span> <span class='va'>demPortion</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_smooth.html'>geom_smooth</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"loess"</span>, se <span class='op'>=</span> <span class='cn'>FALSE</span>, color <span class='op'>=</span> <span class='st'>'blue'</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>x<span class='op'>=</span><span class='st'>'Year'</span>, y <span class='op'>=</span> <span class='st'>'Partisan Voters Registered as Democrats (%)'</span><span class='op'>)</span></span>
+<span>  </span>
+<span><span class='va'>repPortionPlot</span></span></code></pre>
+</div>
+<p><img src="index_files/figure-html5/viz2-1.png" width="624" /></p>
+</div>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
