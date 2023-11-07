@@ -19,6 +19,8 @@ What factors have primarily contributed to the shift in Florida's voting pattern
 
 I will be using data from the [Florida Department of State Election Results website](https://results.elections.myflorida.com/). I will download the state and country-level data and merge it with the necessary demographic data. The data is fully comprehensive, and I will attempt to use data dating back to the 1992 election, though the data goes back to 1978. 
 
+## Visualization 
+
 Visualization One:
 
 ```{r setup}
@@ -32,7 +34,7 @@ registration <- registration |> mutate(repPortion = 100 * republicans/(republica
 repPortionPlot <- ggplot(data = registration,
        mapping = aes(x = year,
                      y = repPortion)) +
-  geom_point() + geom_smooth(method = "loess", se = FALSE, color = 'red') + labs(x='Year', y = 'Partisan Voters Registered as Republicans (%)')
+  geom_point() + geom_smooth(method = "loess", se = FALSE, color = 'red') + labs(x='Year', y = 'FL Partisan Voters Registered as Republicans (%)')
   
 repPortionPlot
 ```
@@ -45,8 +47,41 @@ registration <- registration |> mutate(demPortion = 100 * democrats/(republicans
 repPortionPlot <- ggplot(data = registration,
        mapping = aes(x = year,
                      y = demPortion)) +
-  geom_point() + geom_smooth(method = "loess", se = FALSE, color = 'blue') + labs(x='Year', y = 'Partisan Voters Registered as Democrats (%)')
+  geom_point() + geom_smooth(method = "loess", se = FALSE, color = 'blue') + labs(x='Year', y = 'FL Partisan Voters Registered as Democrats (%)')
   
 repPortionPlot
 ```
+## Analysis 
+```{r analysis1}
+income <- read_csv('data/income.csv')
+income <- income |> inner_join(registration)
 
+coeff <- 1200
+
+repIncomePlot <- ggplot(income, aes(x=year)) +
+  
+  geom_line( aes(y=repPortion, color = 'Republican Portion')) + 
+  geom_line( aes(y=median_income / coeff, color = 'Median Income')) +
+  scale_y_continuous(
+    name = "FL Partisan Voters Registered as Republicans (%)",
+    sec.axis = sec_axis(~.*coeff, name="Median Income (2022 Real USD)")
+  ) + scale_color_manual(values = c("Republican Portion" = "red", "Median Income" = "darkgreen")) + labs(title = 'FL Republican Portion vs. Median Income by Year')
+
+repIncomePlot
+```
+```{r analysis2}
+
+income |>
+  summarize(cor(repPortion, median_income)) |> knitr::kable(digits = 3, col.names = c('Correlation between Republican Portion and Median Income by Year in FL'))
+```
+
+In the above graph and figure, we see a relatively strong, positive correlation between the (inflation-adjusted) median income in FL and the portion of partisan voters in the state registered as Republicans. This correlation is likely non-trivial, and I would assume there is a decent relationship between other variables to be explored in the remainder of the project, such as median age across the state. An increased in income is correlated with increases an age, and both of these factors can historically be correlated to increases in likelihood to be registered as a republican. Across the past 50 years in Florida, I hypothesize we will begin to see similar patterns in the demographic makeup and correlations within the state. As the median income in Florida rises, it is linked to an increase in suburban neighborhoods, more white-collar positions throughout the state, and a wealthier demographic overall, all of which I believe would drive an increase in republican registration proportions.
+
+## Sources
+[USA Facts](https://usafacts.org/data/topics/people-society/population-and-demographics/our-changing-population/state/florida/?endDate=2021-01-01&startDate=1972-01-01)
+
+[Florida Department of State](https://dos.fl.gov/elections/data-statistics/voter-registration-statistics/voter-registration-reports/voter-registration-by-party-affiliation/by-party-affiliation-archive/)
+
+[Federal Reserve Bank Of St. Louis](https://fred.stlouisfed.org/series/MEHOINUSFLA672N)
+
+[Statista](https://www.statista.com/statistics/205798/median-household-income-in-florida/)
